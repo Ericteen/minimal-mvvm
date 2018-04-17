@@ -1,7 +1,7 @@
 import { MV } from './index';
 
-const callback = (newVal, oldVal) => {
-  console.log(`NewValue: ${newVal} --- OldValue: ${oldVal}`);
+const callback = (newVal, oldVal, path) => {
+  console.log(`NewValue: ${newVal} --- OldValue: ${oldVal} --- path: ${path}`);
 }
 
 let data = {

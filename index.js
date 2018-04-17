@@ -10,12 +10,18 @@ export class MV {
     this.observe(obj);
   }
 
-  observe(obj) {
+  observe(obj, path) {
     if (OP.toString.call(obj) === '[object Array]') {
-      this.overrideArrayProto(obj);
+      this.overrideArrayProto(obj, path);
     }
     Object.keys(obj).forEach(function (key, index) {
       let oldVal = obj[key];
+      let pathArray = path && path.slice(0);
+      if (pathArray) {
+        pathArray.push(key);
+      } else {
+        pathArray = [key];
+      }
       Object.defineProperty(obj, key, {
         get: function () {
           return oldVal;
@@ -24,21 +30,21 @@ export class MV {
         set: (function (newVal) {
           if (oldVal !== newVal) {
             if (OP.toString.call(newVal) === '[object Object]' || OP.toString.call(newVal) === '[object Array]') {
-              this.observe(newVal);
+              this.observe(newVal, pathArray);
             }
-            this.$cb(newVal, oldVal);
+            this.$cb(newVal, oldVal, pathArray);
             oldVal = newVal;
           }
         }).bind(this)
       });
 
       if (OP.toString.call(obj[key]) === '[object Object]' || OP.toString.call(obj[key]) === '[object Array]') {
-        this.observe(obj[key]);
+        this.observe(obj[key], pathArray);
       }
     }, this);
   }
 
-  overrideArrayProto(array) {
+  overrideArrayProto(array, path) {
     const originalProto = Array.prototype;
     const overrideProto = Object.create(Array.prototype);
     const self = this;
@@ -54,9 +60,9 @@ export class MV {
           // 调用原始 原型 的数组方法
           result = originalProto[method].apply(this, arg);
           // 对新的数组进行监测
-          self.observe(this);
+          self.observe(this, path);
           // 执行回调
-          self.$cb(this, oldArray);
+          self.$cb(this, oldArray, path);
 
           return result;
         },
