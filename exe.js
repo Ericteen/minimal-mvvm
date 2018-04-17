@@ -1,4 +1,4 @@
-import { MV } from './index';
+import { MV } from './src/index';
 
 const callback = (newVal, oldVal, path) => {
   console.log(`NewValue: ${newVal} --- OldValue: ${oldVal} --- path: ${path}`);
