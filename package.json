@@ -1,0 +1,19 @@
+{
+  "name": "minimal-mvvm-implementation",
+  "version": "0.1.0",
+  "description": "mvvm implementaion",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "mvvm"
+  ],
+  "author": "cheng_guanghui <chengteen@yeah.net> (https://github.com/Ericteen)",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
